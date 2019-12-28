@@ -7,14 +7,14 @@ writing_client::writing_client(int fd) : file_descriptor(fd), st_buffer(BUFSIZ) 
 ssize_t writing_client::read_from_client(size_t count)
 {
     ssize_t ret = abstract_read(count);
-    //it = dc.update(it, std::time(nullptr) + timeout);
+    alive = true;
     return ret;
 }
 
 void writing_client::write_to_client()
 {
     abstract_write();
-    //it = dc.update(it, std::time(nullptr) + timeout);
+    alive = true;
 }
 
 writing_client::~writing_client() {}

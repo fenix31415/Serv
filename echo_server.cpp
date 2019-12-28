@@ -20,35 +20,39 @@ echo_server::echo_server(servers_handler* parent, uint16_t port) : port(port), p
     start_listening();
 
 
-    /*struct itimerspec new_value{};
+    int msec = 10000;
+    struct itimerspec tc{};
     int timerfd;
-    struct timespec now{};
-    uint64_t exp, tot_exp;
-    ssize_t s;
 
-    new_value.it_value.tv_sec = 5;
-    new_value.it_interval.tv_sec = 5000;
+    tc.it_value.tv_sec = msec / 1000;
+    tc.it_value.tv_nsec = 0;
+    tc.it_interval.tv_sec = 10;
+    tc.it_interval.tv_nsec = 0;
 
     timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
     if (timerfd == -1)
         throw server_exception("timerfd_create system error");
 
-    if (timerfd_settime(timerfd, 0, &new_value, NULL) == -1)
+    if (timerfd_settime(timerfd, 0, &tc, NULL) == -1)
         throw server_exception("timerfd_settime system error");
 
     timer = std::make_unique<server_uniq_fd>(writing_client(timerfd), parent, [this]() {
-        clean_old_connections();
-        std::cout<<"cleaning\n";
+        update_connections();
+        timer.get()->read_from_client(10);
+        //std::cout<<"cleaned\n";
         return;
     }, EPOLLIN);
-    std::cout<<"timer added\n";*/
+    std::cout<<"timer added\n";
 }
 
-void echo_server::clean_old_connections() {
-    while (!deleted_connections.empty()) {
-        echo_connection *t = *deleted_connections.begin();
-        connections.erase(t->sock.get_fd());
-        deleted_connections.erase(deleted_connections.begin());
+void echo_server::update_connections() {
+    for(auto& con : connections) {
+        if(con.second.get()->sock.alive) {
+            con.second.get()->sock.alive = false;
+            //std::cout<<con.first<<"was alive\n";
+        } else {
+            con.second.get()->disconnect();
+        }
     }
 }
 

@@ -19,9 +19,9 @@ void servers_handler::exec() {
                     throw server_exception("Caught signal");
                 }
                 
-                utils::ensure("starting callback " + std::to_string(res.second[i].data.fd) + "\n");
+                //utils::ensure("starting callback " + std::to_string(res.second[i].data.fd) + "\n");
                 reinterpret_cast<server_uniq_fd *> (res.second[i].data.ptr)->callback();
-                utils::ensure("finished callback\n");
+                //utils::ensure("finished callback\n");
             }
         }
     }

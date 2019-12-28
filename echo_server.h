@@ -25,7 +25,6 @@ private:
     const size_t default_client_buffer_size = 64;
     const size_t default_buffer_size = 16;
     const int default_timeout = 10;
-    void clean_old_connections();
     unique_ptr<server_uniq_fd> timer;
     uint16_t port;
     server_uniq_fd server_fd;
@@ -42,6 +41,8 @@ private:
 
 public:
     servers_handler *parent;
+
+    void update_connections();
 
     echo_server(servers_handler* parent, uint16_t port);
 

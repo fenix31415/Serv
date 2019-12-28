@@ -25,6 +25,7 @@ private:
 
     inline static const size_t BUFSIZE = 32;
 public:
+    bool alive = true;
     ~writing_client();
 
     ssize_t read_from_client(size_t count);
