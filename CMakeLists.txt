@@ -6,7 +6,6 @@ add_executable("echo_server"
         main.cpp
         servers_handler.cpp servers_handler.h
         echo_server.cpp echo_server.h
-        callb_fd.cpp callb_fd.h
         utils/util_functions.cpp utils/util_functions.h utils/server_exception.h
         wrappers/epoll_wrapper.cpp wrappers/epoll_wrapper.h
         wrappers/file_descriptor.cpp wrappers/file_descriptor.h
