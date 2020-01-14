@@ -4,9 +4,7 @@
 #include <exception>
 #include <string>
 
-struct server_exception : std::exception
-{
-public:
+struct server_exception : std::exception {
     server_exception(const std::string& msg) : msg(msg) {}
 
     server_exception(std::string&& msg) : msg(std::move(msg)) {}
